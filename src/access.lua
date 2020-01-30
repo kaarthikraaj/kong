@@ -38,7 +38,7 @@ function _M.execute(conf)
   local headers_from_req = get_headers()
   local name = "[middleman] "
   local ok, err
-  r,c,h = http.request {method="GET",url=conf.url,headers= {Authorization=headers["Authorization"],route=headers["route"]}}
+  r,c,h = http.request {method="GET",url=conf.url,headers= {Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   return kong_response.send(r, "Ok")
 
 end
