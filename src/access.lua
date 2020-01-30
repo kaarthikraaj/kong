@@ -39,7 +39,7 @@ function _M.execute(conf)
   local name = "[middleman] "
   local ok, err
   r,c,h = http.request {method="GET",url=conf.url,headers= {Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
-  return kong_response.send(r, "Ok")
+  return kong_response.send(c, "Ok")
 
 end
 
