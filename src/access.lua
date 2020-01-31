@@ -38,8 +38,16 @@ function _M.execute(conf)
   local headers_from_req = get_headers()
   local name = "[middleman] "
   local ok, err
+  ngx.log(ngx.ERR,conf.url)
+  --ngx.log(ngx.ERR,"http object is " .. http)
   r,c,h = http.request {method="GET",url=conf.url,headers= {Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
-  return kong_response.send(c, "Ok")
+  --ngx.log(ngx.ERR,headers_from_req["Authorization"])
+  local response_body = string.match(r,"%b{}")
+  ngx.log(ngx.ERR,c)
+  if c > 400 then
+  return kong_response.exit(c,"Authentication Failure")
+  else return
+  end	  
 
 end
 
