@@ -44,7 +44,7 @@ function _M.execute(conf)
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
-  if c > 400 then
+  if (c == 401 or c == 403)then
   return kong_response.exit(c,"Authentication Failure")
   else return
   end	  
