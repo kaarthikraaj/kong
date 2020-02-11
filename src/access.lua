@@ -40,7 +40,7 @@ function _M.execute(conf)
   local ok, err
   ngx.log(ngx.ERR,conf.url)
   --ngx.log(ngx.ERR,"http object is " .. http)
-  r,c,h = http.request {method="GET",url=conf.url,headers= {Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
+  r,c,h = http.request {method="GET",url=conf.url,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
