@@ -56,7 +56,7 @@ function _M.execute(conf)
   ngx.log(ngx.ERR,conf.url)
   ngx.log(ngx.ERR,headers_from_req["Host"])
   local authurl = getAuthUrl(headers_from_req["Host"],conf.url)
-  ngx.log(ngx.err,authurl)
+ -- ngx.log(ngx.err,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
   r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
