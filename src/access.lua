@@ -42,7 +42,7 @@ local function getAuthUrl(host_url,conf_url)
     do
         ngx.log(ngx.ERR,w)
         if not string.match(w, host_url) then
-            ngx.log("returning" .. w)
+            ngx.log(ngx.ERR,"returning" .. w)
             return w
         end
     end
