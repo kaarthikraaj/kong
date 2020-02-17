@@ -51,7 +51,7 @@ function _M.execute(conf)
   local name = "[middleman] "
   local ok, err
   ngx.log(ngx.ERR,conf.url)
-  ngx.log(headers_from_req["Host"])
+  ngx.log(ngx.ERR,headers_from_req["Host"])
   local authurl = getAuthUrl(headers_from_req["Host"],conf.url)
   ngx.log(ngx.err,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
