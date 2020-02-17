@@ -37,7 +37,7 @@ end
 local function getAuthUrl(host_url,conf_url)
   ngx.log(ngx.ERR,host_url)
   ngx.log(ngx.ERR,conf_url)
-  for w in conf_url:gmatch(",")
+  for w in conf_url:gmatch('([^,]+)')
     do
         ngx.log(ngx.ERR,w)
         if not string.match(w, host_url) then return w
