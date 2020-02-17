@@ -35,12 +35,15 @@ local function parse_url(host_url)
 end
 
 local function getAuthUrl(host_url,conf_url)
+  local response = "dummy"
   ngx.log(ngx.ERR,host_url)
   ngx.log(ngx.ERR,conf_url)
   for w in conf_url:gmatch('([^,]+)')
     do
         ngx.log(ngx.ERR,w)
-        if not string.match(w, host_url) then return w
+        if not string.match(w, host_url) then
+            ngx.log("returning" .. w)
+            return w
         end
     end
     return "Dummy"
