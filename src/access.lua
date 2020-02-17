@@ -34,13 +34,28 @@ local function parse_url(host_url)
   return parsed_url
 end
 
+local function getAuthUrl(host_url,conf_url)
+  ngx.log(ngx.ERR,host_url)
+  ngx.log(ngx.ERR,conf_url)
+  for w in conf_url:gmatch(",")
+    do
+        ngx.log(w)
+        if not string.match(w, host_url) then return w
+        end
+    end
+    return "Dummy"
+end
+
 function _M.execute(conf)
   local headers_from_req = get_headers()
   local name = "[middleman] "
   local ok, err
   ngx.log(ngx.ERR,conf.url)
+  ngx.log(headers_from_req["Host"])
+  local authurl = getAuthUrl(headers_from_req["Host"],conf.url)
+  ngx.log(ngx.err,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
-  r,c,h = http.request {method="GET",url=conf.url,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
+  r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
