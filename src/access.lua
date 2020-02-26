@@ -51,8 +51,8 @@ local function getAuthUrl(host_url,conf_url)
     do
         ngx.log(ngx.ERR,w)
         local hostIp = getIpOrHost(host_url)
-        if not string.match(ip, hostIp) then
-            ngx.log(ngx.ERR,"returning" .. ip)
+        if not string.match(w, hostIp) then
+            ngx.log(ngx.ERR,"returning" .. w)
             return ip
         end
     end
