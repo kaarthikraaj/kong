@@ -41,12 +41,23 @@ local function getAuthUrl(host_url,conf_url)
   for w in conf_url:gmatch('([^,]+)')
     do
         ngx.log(ngx.ERR,w)
-        if not string.match(w, host_url) then
-            ngx.log(ngx.ERR,"returning" .. w)
-            return w
+        local ip = getIpOrHost(w)
+        if not string.match(ip, host_url) then
+            ngx.log(ngx.ERR,"returning" .. ip)
+            return ip
         end
     end
     return "Dummy"
+end
+
+local function getIpOrHost(proxyurl)
+  local response = "dummy"
+  ngx.log(ngx.ERR,proxyurl)
+  for w in proxyurl:gmatch('([^:]+)')
+    do
+        return w
+    end
+    return proxyurl
 end
 
 function _M.execute(conf)
