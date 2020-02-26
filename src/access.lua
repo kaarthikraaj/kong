@@ -53,7 +53,7 @@ local function getAuthUrl(host_url,conf_url)
         local hostIp = getIpOrHost(host_url)
         if not string.match(w, hostIp) then
             ngx.log(ngx.ERR,"returning" .. w)
-            return ip
+            return w
         end
     end
     return "Dummy"
