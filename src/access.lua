@@ -41,8 +41,8 @@ local function getAuthUrl(host_url,conf_url)
   for w in conf_url:gmatch('([^,]+)')
     do
         ngx.log(ngx.ERR,w)
-        local ip = getIpOrHost(w)
-        if not string.match(ip, host_url) then
+        local hostIp = getIpOrHost(host_url)
+        if not string.match(ip, hostIp) then
             ngx.log(ngx.ERR,"returning" .. ip)
             return ip
         end
