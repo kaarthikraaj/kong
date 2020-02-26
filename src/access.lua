@@ -33,6 +33,15 @@ local function parse_url(host_url)
   end
   return parsed_url
 end
+local function getIpOrHost(proxyurl)
+  local response = "dummy"
+  ngx.log(ngx.ERR,proxyurl)
+  for w in proxyurl:gmatch('([^:]+)')
+    do
+        return w
+    end
+    return proxyurl
+end
 
 local function getAuthUrl(host_url,conf_url)
   local response = "dummy"
@@ -50,15 +59,7 @@ local function getAuthUrl(host_url,conf_url)
     return "Dummy"
 end
 
-local function getIpOrHost(proxyurl)
-  local response = "dummy"
-  ngx.log(ngx.ERR,proxyurl)
-  for w in proxyurl:gmatch('([^:]+)')
-    do
-        return w
-    end
-    return proxyurl
-end
+
 
 function _M.execute(conf)
   local headers_from_req = get_headers()
