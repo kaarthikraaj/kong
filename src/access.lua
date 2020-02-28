@@ -33,15 +33,6 @@ local function parse_url(host_url)
   end
   return parsed_url
 end
-local function getIpOrHost(proxyurl)
-  local response = "dummy"
-  ngx.log(ngx.ERR,proxyurl)
-  for w in proxyurl:gmatch('([^:]+)')
-    do
-        return w
-    end
-    return proxyurl
-end
 
 local function getAuthUrl(host_url,conf_url)
   local response = "dummy"
@@ -50,8 +41,7 @@ local function getAuthUrl(host_url,conf_url)
   for w in conf_url:gmatch('([^,]+)')
     do
         ngx.log(ngx.ERR,w)
-        local hostIp = getIpOrHost(host_url)
-        if not string.match(w, hostIp) then
+        if not string.match(w, host_url) then
             ngx.log(ngx.ERR,"returning" .. w)
             return w
         end
@@ -68,7 +58,7 @@ function _M.execute(conf)
   local ok, err
   ngx.log(ngx.ERR,conf.url)
   ngx.log(ngx.ERR,headers_from_req["Host"])
-  local authurl = getAuthUrl(headers_from_req["Host"],conf.url)
+  local authurl = getAuthUrl(ngx.var.server_addr,conf.url)
   ngx.log(ngx.ERR,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
   r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
