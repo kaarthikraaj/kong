@@ -62,6 +62,7 @@ end
 
 
 function _M.execute(conf)
+  ngx.log(ngx.ERR,ngx.var.server_addr)
   local headers_from_req = get_headers()
   local name = "[middleman] "
   local ok, err
