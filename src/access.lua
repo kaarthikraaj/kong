@@ -36,13 +36,13 @@ end
 
 local function getAuthUrl(host_url,conf_url)
   local response = "dummy"
-  ngx.log(ngx.ERR,host_url)
-  ngx.log(ngx.ERR,conf_url)
+  --ngx.log(ngx.ERR,host_url)
+ -- ngx.log(ngx.ERR,conf_url)
   for w in conf_url:gmatch('([^,]+)')
     do
-        ngx.log(ngx.ERR,w)
+       -- ngx.log(ngx.ERR,w)
         if not string.match(w, host_url) then
-            ngx.log(ngx.ERR,"returning" .. w)
+            --ngx.log(ngx.ERR,"returning" .. w)
             return w
         end
     end
@@ -52,19 +52,19 @@ end
 
 
 function _M.execute(conf)
-  ngx.log(ngx.ERR,ngx.var.server_addr)
+  --ngx.log(ngx.ERR,ngx.var.server_addr)
   local headers_from_req = get_headers()
   local name = "[middleman] "
   local ok, err
-  ngx.log(ngx.ERR,conf.url)
-  ngx.log(ngx.ERR,headers_from_req["Host"])
+ -- ngx.log(ngx.ERR,conf.url)
+ -- ngx.log(ngx.ERR,headers_from_req["Host"])
   local authurl = getAuthUrl(ngx.var.server_addr,conf.url)
-  ngx.log(ngx.ERR,authurl)
+  --ngx.log(ngx.ERR,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
   r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   --local response_body = string.match(r,"%b{}")
-  ngx.log(ngx.ERR,c)
+ -- ngx.log(ngx.ERR,c)
   if (c == 401 or c == 403)then
   return kong_response.exit(c,"Authentication Failure")
   else return
