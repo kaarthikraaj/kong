@@ -3,7 +3,7 @@ local cjson = require "cjson"
 local url = require "socket.url"
 local http = require "socket.http"
 local string_format = string.format
-
+local ltn12 = require 'ltn12'
 local kong_response = kong.response
 
 local get_headers = ngx.req.get_headers
@@ -61,12 +61,14 @@ function _M.execute(conf)
   local authurl = getAuthUrl(ngx.var.server_addr,conf.url)
   ngx.log(ngx.ERR,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
-  r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
+  local res = {}
+  r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]},sink = ltn12.sink.table(res)}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
+  res = table.concat(res)
   --local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
   if (c == 401 or c == 403)then
-  return kong_response.exit(c,"Authentication Failure")
+  return kong_response.exit(c,res)
   else return
   end	  
 
