@@ -3,7 +3,7 @@ local cjson = require "cjson"
 local url = require "socket.url"
 local http = require "socket.http"
 local string_format = string.format
-local ltn12 = require 'ltn12'
+
 local kong_response = kong.response
 
 local get_headers = ngx.req.get_headers
@@ -18,6 +18,7 @@ local HTTP = "http"
 local HTTPS = "https"
 
 local _M = {}
+local result = "success"
 
 local function parse_url(host_url)
   local parsed_url = url.parse(host_url)
@@ -34,6 +35,24 @@ local function parse_url(host_url)
   return parsed_url
 end
 
+local function get(authheaderval,routeheaderval)
+ c = curlobj.easy_init()
+ c = curlobj.easy{
+url = 'https://api.cleointegration.xyz/PR2599/api/authentication"',
+httpheader = {
+"Authorization:"..authheaderval,"route:"..routeheaderval
+}}
+
+c:setopt_url("https://api.cleointegration.xyz/PR2599/api/authentication/
+studioauth")
+ c:perform({writefunction = function(str)
+result = str
+print(str)
+ end})
+ print(result)
+--print(c:getInfo(curlobj.CURLINFO_RESPONSE_CODE))
+ print(c:getinfo(curlobj.INFO_RESPONSE_CODE))
+end
 local function getAuthUrl(host_url,conf_url)
   local response = "dummy"
   ngx.log(ngx.ERR,host_url)
@@ -58,17 +77,17 @@ function _M.execute(conf)
   local ok, err
   ngx.log(ngx.ERR,conf.url)
   ngx.log(ngx.ERR,headers_from_req["Host"])
-  local authurl = getAuthUrl(ngx.var.server_addr,conf.url)
-  ngx.log(ngx.ERR,authurl)
+--  local authurl = getAuthUrl(ngx.var.server_addr,conf.url)
+  --ngx.log(ngx.ERR,authurl)
   --ngx.log(ngx.ERR,"http object is " .. http)
-  local res = {}
-  r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]},sink = ltn12.sink.table(res)}
+  --r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
-  res = table.concat(res)
   --local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
+  get(headers_from_req["Authorization"],headers_from_req["route"])
+  c=curlobj.CURLINFO_RESPONSE_CODE)
   if (c == 401 or c == 403)then
-  return kong_response.exit(c,res)
+  return kong_response.exit(c,result)
   else return
   end	  
 
