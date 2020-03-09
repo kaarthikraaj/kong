@@ -35,16 +35,15 @@ local function parse_url(host_url)
   return parsed_url
 end
 
-local function get(authheaderval,routeheaderval)
+local function get(authheaderval,routeheaderval,conf_url)
  c = curlobj.easy_init()
  c = curlobj.easy{
-url = 'https://api.cleointegration.xyz/PR2599/api/authentication"',
+url = conf_url,
 httpheader = {
 "Authorization:"..authheaderval,"route:"..routeheaderval
 }}
 
-c:setopt_url("https://api.cleointegration.xyz/PR2599/api/authentication/
-studioauth")
+c:setopt_url(conf_url)
  c:perform({writefunction = function(str)
 result = str
 print(str)
@@ -84,7 +83,7 @@ function _M.execute(conf)
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   --local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
-  get(headers_from_req["Authorization"],headers_from_req["route"])
+  get(headers_from_req["Authorization"],headers_from_req["route"],conf.url)
   c=curlobj.CURLINFO_RESPONSE_CODE)
   if (c == 401 or c == 403)then
   return kong_response.exit(c,result)
