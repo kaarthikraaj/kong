@@ -84,7 +84,7 @@ function _M.execute(conf)
   --local response_body = string.match(r,"%b{}")
   ngx.log(ngx.ERR,c)
   get(headers_from_req["Authorization"],headers_from_req["route"],conf.url)
-  c=curlobj.CURLINFO_RESPONSE_CODE)
+  c=curlobj.CURLINFO_RESPONSE_CODE
   if (c == 401 or c == 403)then
   return kong_response.exit(c,result)
   else return
