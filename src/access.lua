@@ -3,7 +3,7 @@ local cjson = require "cjson"
 local url = require "socket.url"
 local http = require "socket.http"
 local string_format = string.format
-
+local curlobj = require("cURL")
 local kong_response = kong.response
 
 local get_headers = ngx.req.get_headers
