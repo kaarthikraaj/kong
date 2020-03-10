@@ -82,11 +82,11 @@ function _M.execute(conf)
   --r,c,h = http.request {method="GET",url=authurl,headers= {cicauth="true",Authorization=headers_from_req["Authorization"],route=headers_from_req["route"]}}
   --ngx.log(ngx.ERR,headers_from_req["Authorization"])
   --local response_body = string.match(r,"%b{}")
-  ngx.log(ngx.ERR,c)
+  --ngx.log(ngx.ERR,c)
   get(headers_from_req["Authorization"],headers_from_req["route"],conf.url)
-  c=curlobj.CURLINFO_RESPONSE_CODE
-  if (c == 401 or c == 403)then
-  return kong_response.exit(c,result)
+  respcode=curlobj.CURLINFO_RESPONSE_CODE
+  if (respcode == 401 or respcode == 403)then
+  return kong_response.exit(respcode,result)
   else return
   end	  
 
