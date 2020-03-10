@@ -86,7 +86,7 @@ function _M.execute(conf)
   get(headers_from_req["Authorization"],headers_from_req["route"],conf.url)
   respcode=string.sub(c:getinfo(curlobj.INFO_RESPONSE_CODE), 1, 3)
   if (respcode == "401" or respcode == "403")then
-  return kong_response.exit(respcode,result)
+  return kong_response.exit(tonumber(respcode),result)
   else return
   end	  
 
