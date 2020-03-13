@@ -85,7 +85,7 @@ function _M.execute(conf)
   --ngx.log(ngx.ERR,c)
   get(headers_from_req["Authorization"],headers_from_req["route"],conf.url)
   respcode=string.sub(c:getinfo(curlobj.INFO_RESPONSE_CODE), 1, 3)
-  if (respcode == "401" or respcode == "403")then
+  if (tonumber(respcode) >= 400)then
   return kong_response.exit(tonumber(respcode),result)
   else return
   end	  
